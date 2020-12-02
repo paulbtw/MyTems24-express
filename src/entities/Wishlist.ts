@@ -1,21 +1,26 @@
-import { Column, Entity, Index, ManyToOne, OneToMany } from "typeorm";
-import { Base } from "./Base";
-import { GameInfo } from "./GameInfo";
-import { User } from "./User";
+/* eslint-disable import/no-cycle */
+import {
+	Column, Entity, Index, ManyToOne,
+} from 'typeorm';
+import Base from './Base';
+import GameInfo from './GameInfo';
+import User from './User';
 
 @Entity()
-@Index(["userId", "gameInfoId"], { unique: true })
-export class Wishlist extends Base {
-  // Relations
-  @ManyToOne((type) => GameInfo)
-  public gameInfo!: GameInfo;
+@Index(['userId', 'gameInfoId'], { unique: true })
+class Wishlist extends Base {
+	// Relations
+	@ManyToOne(() => GameInfo)
+	public gameInfo!: GameInfo;
 
-  @Column({ nullable: false })
-  public gameInfoId!: string;
+	@Column({ nullable: false })
+	public gameInfoId!: string;
 
-  @ManyToOne((type) => User, (user) => user.wishlist)
-  public user!: User;
+	@ManyToOne(() => User, (user) => user.wishlist)
+	public user!: User;
 
-  @Column({ nullable: false })
-  public userId!: string;
+	@Column({ nullable: false })
+	public userId!: string;
 }
+
+export default Wishlist;

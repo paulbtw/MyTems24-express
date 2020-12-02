@@ -1,37 +1,40 @@
-import { Entity, Column, OneToMany, ManyToOne, Index } from "typeorm";
-import { Base } from "./Base";
-import { GameNotFound } from "./GameNotFound";
-import { GameOffers } from "./GameOffers";
+/* eslint-disable import/no-cycle */
+import { Entity, Column, OneToMany } from 'typeorm';
+import Base from './Base';
+import GameNotFound from './GameNotFound';
+import GameOffers from './GameOffers';
 
 @Entity()
-export class Store extends Base {
-  @Column("text", { nullable: false })
-  public name!: string;
+class Store extends Base {
+	@Column('text', { nullable: false })
+	public name!: string;
 
-  @Column("text", { nullable: true })
-  public image!: string;
+	@Column('text', { nullable: true })
+	public image!: string;
 
-  @Column("boolean", { nullable: false, default: true })
-  public isActive!: boolean;
+	@Column('boolean', { nullable: false, default: true })
+	public isActive!: boolean;
 
-  @Column("text", { array: true, nullable: true })
-  public paymentMethods!: string[];
+	@Column('text', { array: true, nullable: true })
+	public paymentMethods!: string[];
 
-  @Column("jsonb", {
-    default: {
-      paypal: { "99999999": { a: 1, b: 0 } },
-      creditcard: { "99999999": { a: 1, b: 0 } },
-    },
-  })
-  public fee!: {
-    paypal: any;
-    creditcard: any;
-  };
+	@Column('jsonb', {
+		default: {
+			paypal: { 99999999: { a: 1, b: 0 } },
+			creditcard: { 99999999: { a: 1, b: 0 } },
+		},
+	})
+	public fee!: {
+		paypal: any;
+		creditcard: any;
+	};
 
-  // Relations
-  @OneToMany((type) => GameOffers, (gameOffers) => gameOffers.store)
-  public gameOffers!: GameOffers[];
+	// Relations
+	@OneToMany(() => GameOffers, (gameOffers) => gameOffers.store)
+	public gameOffers!: GameOffers[];
 
-  @OneToMany((type) => GameNotFound, (gameNotFound) => gameNotFound.store)
-  public gamesNotFound!: GameNotFound[];
+	@OneToMany(() => GameNotFound, (gameNotFound) => gameNotFound.store)
+	public gamesNotFound!: GameNotFound[];
 }
+
+export default Store;

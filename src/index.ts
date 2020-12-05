@@ -10,8 +10,6 @@ import router from './routes';
 import { errorHandler } from './helper/errorHandler';
 import config from './config/ormconfig';
 
-// import passportConfig from './config/passport';
-
 dotenv.config();
 createConnection(config).then(() => {
 	const app = express();
@@ -37,6 +35,8 @@ createConnection(config).then(() => {
 
 	app.use(passport.initialize());
 	app.use(passport.session());
+	// eslint-disable-next-line global-require
+	require('./config/passport');
 
 	app.use('/', router);
 

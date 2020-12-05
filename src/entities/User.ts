@@ -25,6 +25,9 @@ class User extends Base {
 	@Index({ unique: true })
 	public steamId!: string;
 
+	@Column('boolean', { default: false })
+	public isAdmin!: boolean;
+
 	@OneToMany(() => Wishlist, (wishlist) => wishlist.user)
 	public wishlist!: Wishlist[];
 

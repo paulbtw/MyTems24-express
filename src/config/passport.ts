@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import passport from 'passport';
 import { getRepository } from 'typeorm';
 import User from '../entities/User';
@@ -9,18 +10,18 @@ passport.use(
 		{
 			returnURL: 'http://localhost:5000/auth/steam/callback',
 			realm: 'http://localhost:5000/',
-			apiKey: 'A093FF24D40F3BC724FD4BEB7DCE80F3',
+			apiKey: process.env.STEAM_API_KEY,
 		},
 		async (identifier: string, profile: any, done: any) => {
 			const currentUser = await getRepository(User).findOne({
-				// eslint-disable-next-line no-underscore-dangle
 				where: { steamId: profile._json.steamid },
 			});
 			if (!currentUser) {
 				const newUser = new User();
-				// eslint-disable-next-line no-underscore-dangle
 				newUser.steamId = profile._json.steamid;
-
+				if (profile._json.steamid === '76561198052869177') {
+					newUser.isAdmin = true;
+				}
 				const savedUser = await getRepository(User).save(newUser);
 
 				if (savedUser) {
